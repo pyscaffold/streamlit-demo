@@ -13,6 +13,7 @@ FROM condaforge/mambaforge AS builder
 WORKDIR /root
 
 COPY . /root
+RUN rm -rf dist build
 
 RUN mamba env create -f environment.yml
 # RUN pip install -e . # not needed since it's in environment.yml
@@ -45,6 +46,9 @@ COPY --from=builder --chown=app:app /root/.cache/pip /home/app/.cache/pip
 COPY --from=builder --chown=app:app /opt/conda/pkgs /home/app/.conda/pkgs
 COPY --from=builder --chown=app:app /root/environment.docker.yml environment.yml
 COPY --from=builder --chown=app:app /root/dist/*.whl .
+# Copy Python script for streamlit
+COPY ./scripts/show_dashboard.py ./scripts/show_dashboard.py
+COPY README.md ./
 
 RUN mamba env create -f environment.yml
 RUN mamba clean --packages --yes
@@ -55,6 +59,6 @@ SHELL ["conda", "run", "-n", "streamlit-demo", "/bin/bash", "-c"]
 
 RUN pip install ./*.whl
 
-# Code to run when container is started. Replace `YOUR_CONSOLE_SCRIPT` with the
-# value of `console_scripts` in section `[options.entry_points]` of `setup.cfg`.
-# ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "streamlit-demo", "YOUR_CONSOLE_SCRIPT"]
+EXPOSE 8501/tcp
+# Code to run when container is started.
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "streamlit-demo", "streamlit", "run", "scripts/show_dashboard.py"]
