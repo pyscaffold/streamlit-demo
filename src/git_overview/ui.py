@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 from pandas.tseries import offsets
 
-import utils
+from . import utils
 
 
 def get_sidebar(data):
@@ -224,11 +224,16 @@ def plot_cumulative_lines_by_contributor(data, n=20):
     max_month = df_top_n_month["committed_on"].max()
 
     idx = pd.MultiIndex.from_product(
-        [pd.date_range(min_month, max_month, freq="M"), df_top_n_month["author"].unique()]
+        [
+            pd.date_range(min_month, max_month, freq="M"),
+            df_top_n_month["author"].unique(),
+        ]
     )
     df_top_n_month = df_top_n_month.set_index(["committed_on", "author"])
     df_top_n_month = df_top_n_month["lines_added"].reindex(idx, fill_value=0).to_frame()
-    df_top_n_month = df_top_n_month.rename_axis(["committed_on", "author"]).reset_index()
+    df_top_n_month = df_top_n_month.rename_axis(
+        ["committed_on", "author"]
+    ).reset_index()
     # Cumulative df
     df_top_n_month = (
         df_top_n_month.groupby(["author", "committed_on"])["lines_added"]
@@ -246,7 +251,9 @@ def plot_cumulative_lines_by_contributor(data, n=20):
         .encode(
             x=alt.X("committed_on", title=""),
             y=alt.Y("lines_added", title="Lines Added"),
-            color=alt.condition(selection, "author", alt.value("lightgray"), legend=None),
+            color=alt.condition(
+                selection, "author", alt.value("lightgray"), legend=None
+            ),
             tooltip=[
                 alt.Tooltip("committed_on"),
                 alt.Tooltip("lines_added", format=",.0f"),
@@ -254,7 +261,9 @@ def plot_cumulative_lines_by_contributor(data, n=20):
             ],
         )
         .properties(
-            width=800, height=350, title=f"Cumulative Lines Added by top-{n} Contributors"
+            width=800,
+            height=350,
+            title=f"Cumulative Lines Added by top-{n} Contributors",
         )
         .add_selection(selection)
     )

@@ -29,15 +29,16 @@ repos:
 #     ]
 
 - repo: https://github.com/pycqa/isort
-  rev: 5.10.0
+  rev: 5.10.1
   hooks:
   - id: isort
 
-- repo: https://github.com/psf/black
-  rev: stable
-  hooks:
-  - id: black
-    language_version: python3
+# for some reason utils.py causes an internal error in black!
+# - repo: https://github.com/psf/black
+#  rev: 21.12b0
+#  hooks:
+#  - id: black
+#    language_version: python3
 
 ## If like to embrace black styles even in the docs:
 # - repo: https://github.com/asottile/blacken-docs

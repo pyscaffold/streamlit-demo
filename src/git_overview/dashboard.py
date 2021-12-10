@@ -1,8 +1,8 @@
 from pathlib import Path
 
 import streamlit as st
-import ui
-import utils
+
+from . import ui, utils
 
 
 def body(commit_history):
@@ -64,13 +64,13 @@ def body(commit_history):
         st.write(ui.plot_cumulative_lines_by_contributor(commit_history, 30))
 
 
-if __name__ == "__main__":
+def main(path_to_readme: Path):
     st.set_page_config(layout="wide")
 
     repo_source = ui.get_repo_source()
     if not repo_source:
         # Use github readme as dashboard instructions
-        st.markdown(Path(Path(__file__).parents[2], "README.md").read_text())
+        st.markdown(Path(path_to_readme, "README.md").read_text())
     else:
         commit_history = utils.get_data(repo_source)
-        body = body(commit_history)
+        body(commit_history)

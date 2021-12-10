@@ -15,6 +15,7 @@ Streamlit application powered by a PyScaffold project setup.
 
 ## Description
 
+putup --dsproject streamlit-demo -p git_overview -d "Streamlit application powered by a PyScaffold project setup." -u https://github.com/pyscaffold/streamlit-demo
 A longer description of your project goes here...
 
 ## Installation

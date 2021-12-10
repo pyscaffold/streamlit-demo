@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from streamlit.uploaded_file_manager import UploadedFile
 
-from repo import get_all_commits
+from .repo import get_all_commits
 
 
 @st.cache
@@ -67,9 +67,8 @@ def get_contributor_stats(data, contributor):
         contributor (str): The name of the target contributor
     Returns:
         (tuple): tuple containing:
-
-            stats (dict): Dict containing contributor metrics
-            quarterly_contrib (pd.DataFrame): Dataframe with n. contributions by quarter.
+        - stats (dict): contributor metrics
+        - quarterly_contrib (pd.DataFrame): n. contributions by quarter
     """
     if not contributor:
         return None, None
