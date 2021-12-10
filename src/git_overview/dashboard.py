@@ -31,8 +31,8 @@ def body(commit_history):
 
     # Top-level repo stats
     repo_stats = utils.get_repo_stats(commit_history)
-    p1, p2 = st.beta_columns([1, 1])
-    with st.beta_container():
+    p1, p2 = st.columns([1, 1])
+    with st.container():
         with p1:
             st.subheader("Repository Snapshot")
             for stat in repo_stats.items():
@@ -55,11 +55,11 @@ def body(commit_history):
 
     st.markdown("---")
     st.write(ui.plot_commit_waffle(commit_history))
-    with st.beta_expander("Changes Overview", expanded=True):
+    with st.expander("Changes Overview", expanded=True):
         st.write(ui.plot_daily_contributions(commit_history))
         st.write(ui.plot_inserts_deletions(commit_history))
 
-    with st.beta_expander("Contributors Overview", expanded=True):
+    with st.expander("Contributors Overview", expanded=True):
         st.write(ui.plot_top_contributors(utils.get_top_contributors(commit_history)))
         st.write(ui.plot_cumulative_lines_by_contributor(commit_history, 30))
 
