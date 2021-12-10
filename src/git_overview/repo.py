@@ -83,10 +83,9 @@ def write_dataset(dataset, path, format):
         print(f"{path} exported 🥳")
 
 
-if __name__ == "__main__":
-
+def entry_point():
     parser = argparse.ArgumentParser(
-        description="Extract commit hisotry and information from a target repo",
+        description="Extract commit history and information from a target repo",
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument(
