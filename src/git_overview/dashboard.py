@@ -1,8 +1,8 @@
-import streamlit as st
+from pathlib import Path
 
+import streamlit as st
 import ui
 import utils
-from pathlib import Path
 
 
 def body(commit_history):
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     repo_source = ui.get_repo_source()
     if not repo_source:
         # Use github readme as dashboard instructions
-        st.markdown(Path(Path(__file__).parents[1], "README.md").read_text())
+        st.markdown(Path(Path(__file__).parents[2], "README.md").read_text())
     else:
         commit_history = utils.get_data(repo_source)
         body = body(commit_history)
