@@ -5,13 +5,16 @@
 Streamlit application powered by a [PyScaffold] project setup.
 
 **Work in progress**: The idea of this repo is to demonstrate how to package a streamlit app using PyScaffold.
+Since streamlit currently doesn't support apps as proper Python packages, this example is still suboptimal.
+Following [Github issue](https://github.com/streamlit/streamlit/issues/4162) was created to improve the current situation.
 
 The structure was created with:
 ```shell
-putup --dsproject streamlit-demo -p git_overview -d "Streamlit application powered by a PyScaffold project setup." \
+putup --dsproject streamlit-demo -p git_overview \
+      -d "Streamlit application powered by a PyScaffold project setup." \
       -u https://github.com/pyscaffold/streamlit-demo
 ```
-then the actual code was taken from [git_overview] (MIT-licensed) and changed into a proper Python package layout.
+then the actual code was taken from [git-overview] (MIT-licensed) and changed into a proper Python package layout.
 
 
 The advantages over the original codebase are:
