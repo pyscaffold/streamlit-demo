@@ -42,12 +42,13 @@ In order to set up the necessary environment:
    streamlit run scripts/show_dashboard.py
    ```
 
-3. optionally build a docker image and run it with:
+3. or (optionally) build a docker image and run it with:
    ```shell
    docker build -t local/streamlit-demo:latest .
    docker run -p 8501:8501 local/streamlit-demo:latest
    ```
-   then open [https://localhost:8501](https://localhost:8501).
+
+4. open the dashboard at [http://localhost:8501](http://localhost:8501).
 
 ## Project Organization
 
