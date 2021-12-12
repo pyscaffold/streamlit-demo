@@ -1,74 +1,51 @@
 [![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
-<!-- These are examples of badges you might also want to add to your README. Update the URLs accordingly.
-[![Built Status](https://api.cirrus-ci.com/github/<USER>/streamlit-demo.svg?branch=main)](https://cirrus-ci.com/github/<USER>/streamlit-demo)
-[![ReadTheDocs](https://readthedocs.org/projects/streamlit-demo/badge/?version=latest)](https://streamlit-demo.readthedocs.io/en/stable/)
-[![Coveralls](https://img.shields.io/coveralls/github/<USER>/streamlit-demo/main.svg)](https://coveralls.io/r/<USER>/streamlit-demo)
-[![PyPI-Server](https://img.shields.io/pypi/v/streamlit-demo.svg)](https://pypi.org/project/streamlit-demo/)
-[![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/streamlit-demo.svg)](https://anaconda.org/conda-forge/streamlit-demo)
-[![Monthly Downloads](https://pepy.tech/badge/streamlit-demo/month)](https://pepy.tech/project/streamlit-demo)
-[![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter)](https://twitter.com/streamlit-demo)
--->
 
 # streamlit-demo
 
-Streamlit application powered by a PyScaffold project setup.
+Streamlit application powered by a [PyScaffold] project setup.
 
-## Description
+**Work in progress**: The idea of this repo is to demonstrate how to package a streamlit app using PyScaffold.
 
-putup --dsproject streamlit-demo -p git_overview -d "Streamlit application powered by a PyScaffold project setup." -u https://github.com/pyscaffold/streamlit-demo
-A longer description of your project goes here...
+The structure was created with:
+```shell
+putup --dsproject streamlit-demo -p git_overview -d "Streamlit application powered by a PyScaffold project setup." \
+      -u https://github.com/pyscaffold/streamlit-demo
+```
+then the actual code was taken from [git_overview] (MIT-licensed) and changed into a proper Python package layout.
 
-## Installation
+
+The advantages over the original codebase are:
+1. wheel file for distribution can be easily build with `tox -e build`,
+2. unit tests can be easily added in the `tests` folder,
+3. `extract-repo` is now a shell command (available after installation) instead of a script `repo.py`,
+4. `git_overview` is a Python package that could be reused by other Python projects after installation,
+5. all the [other advantages of a PyScaffold layout](https://pyscaffold.org/en/stable/features.html)...
+
+## Installation & Running the dashboard
 
 In order to set up the necessary environment:
 
-1. review and uncomment what you need in `environment.yml` and create an environment `streamlit-demo` with the help of [conda]:
-   ```
+1. create and activate the environment `streamlit-demo` with the help of [conda]:
+   ```shell
    conda env create -f environment.yml
-   ```
-2. activate the new environment with:
-   ```
    conda activate streamlit-demo
    ```
-
+   or use `environment.lock.yml` to recreate an environment with pinned dependencies.
 > **_NOTE:_**  The conda environment will have streamlit-demo installed in editable mode.
 > Some changes, e.g. in `setup.cfg`, might require you to run `pip install -e .` again.
 
-
-Optional and needed only once after `git clone`:
-
-3. install several [pre-commit] git hooks with:
-   ```bash
-   pre-commit install
-   # You might also want to run `pre-commit autoupdate`
+2. run the dashboard with:
+   ```shell
+   streamlit run scripts/show_dashboard.py
    ```
-   and checkout the configuration under `.pre-commit-config.yaml`.
-   The `-n, --no-verify` flag of `git commit` can be used to deactivate pre-commit hooks temporarily.
 
-4. install [nbstripout] git hooks to remove the output cells of committed notebooks with:
-   ```bash
-   nbstripout --install --attributes notebooks/.gitattributes
+3. optionally build a docker image and run it with:
+   ```shell
+   docker build -t local/streamlit-demo:latest .
+   docker run -p 8501:8501 local/streamlit-demo:latest
    ```
-   This is useful to avoid large diffs due to plots in your notebooks.
-   A simple `nbstripout --uninstall` will revert these changes.
+   then open [https://localhost:8501](https://localhost:8501).
 
-
-Then take a look into the `scripts` and `notebooks` folders.
-
-## Dependency Management & Reproducibility
-
-1. Always keep your abstract (unpinned) dependencies updated in `environment.yml` and eventually
-   in `setup.cfg` if you want to ship and install your package via `pip` later on.
-2. Create concrete dependencies as `environment.lock.yml` for the exact reproduction of your
-   environment with:
-   ```bash
-   conda env export -n streamlit-demo -f environment.lock.yml
-   ```
-   For multi-OS development, consider using `--no-builds` during the export.
-3. Update your current environment with respect to a new `environment.lock.yml` using:
-   ```bash
-   conda env update -f environment.lock.yml --prune
-   ```
 ## Project Organization
 
 ```
@@ -78,35 +55,36 @@ Then take a look into the `scripts` and `notebooks` folders.
 ├── Dockerfile              <- Build a docker container with `docker build .`.
 ├── LICENSE.txt             <- License as chosen on the command-line.
 ├── README.md               <- The top-level README for developers.
-├── configs                 <- Directory for configurations of model & application.
-├── data
-│   ├── external            <- Data from third party sources.
-│   ├── interim             <- Intermediate data that has been transformed.
-│   ├── processed           <- The final, canonical data sets for modeling.
-│   └── raw                 <- The original, immutable data dump.
 ├── docs                    <- Directory for Sphinx documentation in rst or md.
 ├── environment.yml         <- The conda environment file for reproducibility.
-├── models                  <- Trained and serialized models, model predictions,
-│                              or model summaries.
-├── notebooks               <- Jupyter notebooks. Naming convention is a number (for
-│                              ordering), the creator's initials and a description,
-│                              e.g. `1.0-fw-initial-data-exploration`.
 ├── pyproject.toml          <- Build configuration. Don't change! Use `pip install -e .`
 │                              to install for development or to build `tox -e build`.
-├── references              <- Data dictionaries, manuals, and all other materials.
-├── reports                 <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures             <- Generated plots and figures for reports.
-├── scripts                 <- Analysis and production scripts which import the
-│                              actual PYTHON_PKG, e.g. train_model.
+├── scripts                 <- Entry-script `show_dashboard.py` for streamlit
 ├── setup.cfg               <- Declarative configuration of your project.
-├── setup.py                <- [DEPRECATED] Use `python setup.py develop` to install for
-│                              development or `python setup.py bdist_wheel` to build.
+├── setup.py                <- [DEPRECATED] obsolete way of building and installation.
 ├── src
-│   └── git_overview        <- Actual Python package where the main functionality goes.
+│   └── git_overview        <- Actual Python package `git-overview` with the main functionality.
+│       ├── __init__.py
+│       ├── dashboard.py    <- Layout-function of the actual dashboard.
+│       ├── repo.py         <- Functions to download repo data.
+│       └── utils.py        <- Some dashboard-related helpers
 ├── tests                   <- Unit tests which can be run with `pytest`.
 ├── .coveragerc             <- Configuration for coverage reports of unit tests.
 ├── .isort.cfg              <- Configuration for git hook that sorts imports.
 └── .pre-commit-config.yaml <- Configuration of pre-commit git hooks.
+```
+
+This structure is in strong contrast to the original one:
+
+```
+├── app
+│   ├── dashboard.py        <- Dashboard entry-point
+│   ├── __init__.py
+│   ├── repo.py             <- Script to download repo data
+│   └── utils.py            <- Some dashboard-related helpers
+├── Dockerfile
+├── README.md
+└── requirements.txt
 ```
 
 <!-- pyscaffold-notes -->
@@ -116,9 +94,11 @@ Then take a look into the `scripts` and `notebooks` folders.
 This project has been set up using [PyScaffold] 4.1.1.post1.dev28+g075b76f and the [dsproject extension] 0.6.1.post28+g91ab61a.
 
 [conda]: https://docs.conda.io/
+[PyScaffold]: https://pyscaffold.org/
 [pre-commit]: https://pre-commit.com/
 [Jupyter]: https://jupyter.org/
 [nbstripout]: https://github.com/kynan/nbstripout
 [Google style]: http://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings
 [PyScaffold]: https://pyscaffold.org/
 [dsproject extension]: https://github.com/pyscaffold/pyscaffoldext-dsproject
+[git-overview]: https://github.com/andodet/git-overview
